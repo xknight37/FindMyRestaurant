@@ -20,6 +20,10 @@ db.on('error',()=>{
     console.log("error connecting to database");
 })
 
+// need to export the routes created
+
+require('./routes/restaurant.routes')(app);
+
 /**
  * start the server
  */
