@@ -104,5 +104,37 @@ exports.getParticularCategory = async (req,res)=>{
 }
 
 exports.getPlaceById = async (req,res)=>{
+    try{
     const idObj = req.params.id;
+    const resObj = await Restaurant.findById(idObj);
+    if(!resObj){
+        return  res.status(404).send({
+            message : "No Restaurant found with the given ID"
+        })
+    }
+    else{
+        return res.status(200).send(resObj);
+    }}catch(err){
+        console.log("Error while fetching the restaurant", err.message);
+        return res.status(404).send({
+            message : "No Restaurant found with the given ID"
+        })
+    }
+}
+
+exports.getPlaceByRating = async (req,res)=>{
+    try{
+        const ratingObj = req.params.ratingValue;
+        const objWithRating = await Restaurant.find({"rating":{$gte : ratingObj}});
+        return res.status(200).send({
+            restaurants : objWithRating,
+            message : "Restaurants fetched successfully."
+        });
+        } catch (err) {
+            console.log("Error while fetching all the Restaurants ", err.message);
+            return res.status(500).send({
+                message : "Some error occured while fetching the Restaurant."
+            })
+        }
+
 }

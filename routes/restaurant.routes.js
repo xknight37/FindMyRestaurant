@@ -12,7 +12,7 @@ module.exports = (app)=>{
 
     app.get('/api/restaurant/:id',restaurantController.getPlaceById);
 
-    // app.get('/api/restaurant/rating/ratingValue',restaurantController.getPlaceByRating);
+    app.get('/api/restaurant/rating/:ratingValue',restaurantController.getPlaceByRating);
 
 
 
