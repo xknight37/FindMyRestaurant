@@ -2,6 +2,7 @@
 const Restaurant = require('../models/restaurant.model')
 
 //read restaurant data from the req body
+
 exports.addRestaurant = async (req,res)=>{
     if(!req.body.name && !req.body.description && !req.body.category && !req.body.imageURL && !req.body.location && !req.body.phone && !req.body.rating ){
         return res.status(400).send({
@@ -108,6 +109,8 @@ exports.getParticularCategory = async (req,res)=>{
     }
 }
 
+//function to return restaurant based on ID
+
 exports.getPlaceById = async (req,res)=>{
     try{
     const idObj = req.params.id;
@@ -127,6 +130,8 @@ exports.getPlaceById = async (req,res)=>{
     }
 }
 
+//function to return list of restaurants based on rating
+
 exports.getPlaceByRating = async (req,res)=>{
     try{
         const ratingObj = req.params.ratingValue;
@@ -144,6 +149,7 @@ exports.getPlaceByRating = async (req,res)=>{
 
 }
 
+//function to update a restaurant based on id
 
 exports.updateRestaurant = async (req,res)=>{
     if(!req.body.name && !req.body.description && !req.body.category && !req.body.imageURL && !req.body.location && !req.body.phone && !req.body.rating ){
@@ -174,6 +180,8 @@ exports.updateRestaurant = async (req,res)=>{
     }
 };
 
+//function to delete restaurant based on ID
+
 exports.deleteById =async (req,res)=>{
     try {
         const toBeDeleted = req.params.id;
@@ -193,14 +201,13 @@ exports.deleteById =async (req,res)=>{
     
 };
 
+//function to delete all the restaurants
+
 exports.deleteAll =async (req,res)=>{
     try{
         const deletedCount = await Restaurant.deleteMany();
         return res.status(200).send({
-            restaurants : {
-                acknowledged : "true",
-                deletedCount : deletedCount
-            },
+            restaurants : deletedCount,
             message : "Restaurants deleted successfully"
         })
 

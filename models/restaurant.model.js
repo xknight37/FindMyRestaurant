@@ -12,7 +12,7 @@ const restaurantSchema = new mongoose.Schema({
     location : String,
     phone : String,
     rating : Number
-},{timestamps : true,versionKey : false}
+},{timestamps : true,versionKey : "true"}
 );
 
 module.exports = mongoose.model("Restaurant",restaurantSchema);
