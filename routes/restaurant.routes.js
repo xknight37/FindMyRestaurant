@@ -14,7 +14,11 @@ module.exports = (app)=>{
 
     app.get('/api/restaurant/rating/:ratingValue',restaurantController.getPlaceByRating);
 
+    app.put('/api/restaurant/:id',restaurantController.updateRestaurant);
 
+    app.delete('/api/restaurant/:id',restaurantController.deleteById);
+
+    app.delete('/api/restaurant',restaurantController.deleteAll);
 
 }
 

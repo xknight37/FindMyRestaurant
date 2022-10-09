@@ -3,6 +3,11 @@ const Restaurant = require('../models/restaurant.model')
 
 //read restaurant data from the req body
 exports.addRestaurant = async (req,res)=>{
+    if(!req.body.name && !req.body.description && !req.body.category && !req.body.imageURL && !req.body.location && !req.body.phone && !req.body.rating ){
+        return res.status(400).send({
+            message : "Content cannot be empty"
+        })
+    }
 
     const newRestaurant = {
         name : req.body.name,
@@ -18,7 +23,7 @@ exports.addRestaurant = async (req,res)=>{
         const restaurant = await Restaurant.create(newRestaurant);
 
         const restResp = {
-            name : restaurant.name,
+        name : restaurant.name,
         description : restaurant.description,
         category : restaurant.category,
         imageURL : restaurant.imageURL,
@@ -138,3 +143,72 @@ exports.getPlaceByRating = async (req,res)=>{
         }
 
 }
+
+
+exports.updateRestaurant = async (req,res)=>{
+    if(!req.body.name && !req.body.description && !req.body.category && !req.body.imageURL && !req.body.location && !req.body.phone && !req.body.rating ){
+        return res.status(400).send({
+            message : "Restaurant Data is required."
+        })
+    }
+    const updateId = {_id : req.params.id};
+    const updateBody = {
+        name : req.body.name,
+        description : req.body.description,
+        category : req.body.category,
+        imageURL : req.body.imageURL,
+        location : req.body.location,
+        phone : req.body.phone,
+        rating : req.body.rating
+    }
+    const finale = await Restaurant.findOneAndUpdate(updateId,updateBody);
+    if(!finale){
+        return res.status(200).send({
+            message : "No restaurant found for given ID"
+        })
+    }
+    else{
+        return res.status(200).send({
+            message : "Restaurant updated Successfully."
+        })
+    }
+};
+
+exports.deleteById =async (req,res)=>{
+    try {
+        const toBeDeleted = req.params.id;
+        const targetObj = await Restaurant.findByIdAndDelete(toBeDeleted.toString());
+            res.status(200).send({
+                restaurants : targetObj,
+                message : "Restaurant deleted successfully."
+            })       
+        
+        
+    } catch (err) {
+        console.log("Error while fetching all the Restaurants ", err.message);
+        return res.status(500).send({
+            message : "Some error occured while deleting the Restaurant."
+        })
+    }
+    
+};
+
+exports.deleteAll =async (req,res)=>{
+    try{
+        const deletedCount = await Restaurant.deleteMany();
+        return res.status(200).send({
+            restaurants : {
+                acknowledged : "true",
+                deletedCount : deletedCount
+            },
+            message : "Restaurants deleted successfully"
+        })
+
+    }catch (err) {
+            console.log("Error while fetching all the Restaurants ", err.message);
+            return res.status(500).send({
+                message : "Some error occured while deleting the Restaurant."
+            })
+        }
+    
+};
